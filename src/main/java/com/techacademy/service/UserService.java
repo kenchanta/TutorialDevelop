@@ -20,6 +20,12 @@ public class UserService {
     }
 
     // ----- 追加:ここから -----
+    /** Userを一件検索して返す */
+    public User getUser(Integer id) { /*なぜInteger?：findById メソッドは、ID を Integer 型として受け取るため*/
+        return userRepository.findById(id).get();
+    }
+    // ----- 追加:ここまで -----
+
     /** フォーム入力情報をDBに登録 */
     @Transactional /*エラーの際に戻るなど、基本的にフォーム登録の際は必要*/
     public User saveUser(User user) {

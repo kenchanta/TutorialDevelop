@@ -1,5 +1,7 @@
 package com.techacademy.controller;
 
+import java.util.Set;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,9 +9,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.techacademy.entity.User;
 import com.techacademy.service.UserService;
+
 
 @Controller
 @RequestMapping("user") //クラス全体に対して /user という部分のURLを追加することを意味する
@@ -58,6 +62,17 @@ public class UserController {
         service.saveUser(user);
         return "redirect:/user/list";
     }
+
+    /** User削除処理 */
+    @PostMapping(path="list", params="deleteRun")
+    public String deleteRun(@RequestParam(name="idck") Set<Integer> idck, Model model) {
+        service.deleteUser(idck);
+        return "redirect:/user/list";
+        //redirectの場合、model への追加は不要で、リダイレクトだけを行えば十分（この場合は削除処理の後に特にビューに渡す情報がない＝model.addAllAttributes() を使って情報をビューに渡す必要はない）
+    }
+
+    /**User削除処理*/
+
 
 }
 

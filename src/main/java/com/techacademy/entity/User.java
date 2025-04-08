@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional; // 追加
 
 import lombok.Data;
 
-@Data
+@Data //メソッドが自動生成:getId(), getName()（@Getter）setId(int id), setName(String name)（@Setter）など
 @Entity
 @Table(name = "user")
 public class User {

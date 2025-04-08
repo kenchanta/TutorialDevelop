@@ -12,23 +12,33 @@
         <label for="id">ID</label>
         <input type="hidden" id="id" name="id" th:value="*{id}" th:text="*{id}">
         <br>
+
         <label for="name">名前</label>
-        <input type="text" th:field="*{name}">
+        <input type="text" th:field="*{name}"　th:errorclass="err"> <!--追加-->
+        <span th:errors="*{name}" class="err"></span> <!--追加-->
         <br>
+
         <label for="gender">性別</label>
-        <select th:field="*{gender}">
-            <option value="" th:text="選択してください"> <!--optionタグは、ドロップダウンメニューの選択肢を定義。value="" は、選択肢が選ばれていない状態で送信される値-->
-            <option th:each="item:${T(com.techacademy.entity.User.Gender).values()}" th:value="${item}" th:text="${item}" th:selected="*{gender} == ${item}">
+        <select th:field="*{gender}" th:errorclass="err"> <!--追加-->
+            <option value="" th:text="選択してください" th:selected="${user.gender == ''}"> <!--optionタグは、ドロップダウンメニューの選択肢を定義。value="" は、選択肢が選ばれていない状態で送信される値-->
+            <option th:each="item:${T(com.techacademy.entity.User.Gender).values()}"
+            th:value="${item}" th:text="${item}" th:selected="*{gender} == ${item}">
             <!--変数itemにenumの値を繰り返しで全格納。th:valueはフォームデータとして送信される値、th:textはユーザーに選択肢として表示される値-->
         </select>
+        <span th:errors="*{gender}" class="err"></span> <!--追加-->
         <br>
+
         <label for="年齢">年齢</label>
-        <input type="text" th:field="*{age}">
+        <input type="text" th:field="*{age}" th:errorclass="err"> <!--追加-->
+        <span th:errors="*{age}" class="err"></span> <!--追加-->
         <br>
+
         <label for="email">メールアドレス</label>
-        <input type="text" th:field="*{email}">
+        <input type="text" th:field="*{email}" th:errorclass="err"> <!--追加-->
+        <span th:errors="*{email}" class="err"></span> <!--追加-->
         <br>
         <br>
+
         <input type="submit" value="更新実行">
         <a th:href="@{/user/list}">更新せずに一覧に戻る</a>
     </form>

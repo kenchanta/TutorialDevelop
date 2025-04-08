@@ -4,8 +4,11 @@ import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult; // 追加
 import org.springframework.validation.annotation.Validated; // 追加
+//@Validated を使ってバリデーションを実行した結果、BindingResult を使ってその結果を取り扱う。両方が揃っている必要がある。
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +47,6 @@ public class UserController {
         return "user/register";
     }
 
-    // ----- 変更ここから -----
     /** User登録処理 */
     @PostMapping("/register") //registerでフォーム入力→@PostMappingがついたメソッドにマッピングされる
     //@Validated バリデーション＝変なことないか？のチェック
@@ -58,18 +60,25 @@ public class UserController {
         // 一覧画面にリダイレクト
         return "redirect:/user/list";
     }
-    // ----- 変更ここまで -----
 
     /** User更新画面を表示 */
     @GetMapping("/update/{id}/")
     public String getUser(@PathVariable("id") Integer Id, Model model) {
+        if(Id == null) {
+            return "user/update";
+        }
         model.addAttribute("user", service.getUser(Id));
         return "user/update";
     }
 
+    //課題のため修正
     /**User更新処理*/
     @PostMapping("/update/{id}/")
-    public String postUser(User user) {
+    public String postUser(@PathVariable("id") Integer Id, @Validated User user, BindingResult res, Model model) {
+        if(res.hasErrors()) {
+                Id = null;
+                return getUser(Id,model);
+        }
         service.saveUser(user);
         return "redirect:/user/list";
     }
@@ -81,9 +90,6 @@ public class UserController {
         return "redirect:/user/list";
         //redirectの場合、model への追加は不要で、リダイレクトだけを行えば十分（この場合は削除処理の後に特にビューに渡す情報がない＝model.addAllAttributes() を使って情報をビューに渡す必要はない）
     }
-
-    /**User削除処理*/
-
 
 }
 

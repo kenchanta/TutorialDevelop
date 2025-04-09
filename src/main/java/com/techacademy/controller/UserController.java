@@ -39,7 +39,7 @@ public class UserController {
     /** User登録画面を表示　*/
      /*
          このメソッドがないと、ユーザーが /user/register にアクセスしても、ユーザー登録フォームが表示されない。
-         つまり①、@GetMapping("/register") の役割は、ブラウザからのHTTPリクエストを受け取り、それに対してサーバーがどのページを返すべきかを指示するもの
+         つまりz①、@GetMapping("/register") の役割は、ブラウザからのHTTPリクエストを受け取り、それに対してサーバーがどのページを返すべきかを指示するもの
          つまり②、HTMLは直接HTTPリクエストを受け取ることはできない。HTMLファイルをどのように、どのタイミングで表示するかを決定するのは、サーバー側のロジック（コントローラー）
      */
     @GetMapping("/register") //registerにアクセス→@GetMappingがついたメソッドが実行される
@@ -63,7 +63,7 @@ public class UserController {
 
     /** User更新画面を表示 */
     @GetMapping("/update/{id}/")
-    public String getUser(@PathVariable("id") Integer Id, Model model) {
+    public String getUser(@PathVariable("id") Integer Id, Model model, User user) {
         if(Id == null) {
             return "user/update";
         }
@@ -71,13 +71,12 @@ public class UserController {
         return "user/update";
     }
 
-    //課題のため修正
     /**User更新処理*/
     @PostMapping("/update/{id}/")
     public String postUser(@PathVariable("id") Integer Id, @Validated User user, BindingResult res, Model model) {
         if(res.hasErrors()) {
                 Id = null;
-                return getUser(Id,model);
+                return getUser(Id,model,user);
         }
         service.saveUser(user);
         return "redirect:/user/list";
